@@ -1,16 +1,41 @@
-# epsi_shop
+# 🛒 EPSI Shop
 
-A new Flutter project.
+**EPSI Shop** est une application Flutter qui permet d'afficher une liste de produits et de gérer un panier d'achat.  
+Elle utilise **Flutter, Provider et GoRouter**.
 
-## Getting Started
+## 📌 Fonctionnalités
 
-This project is a starting point for a Flutter application.
+✅ Liste des produits avec images et prix  
+✅ Détail d'un produit  
+✅ Ajout/Suppression de produits dans le panier  
+✅ Gestion des quantités dans le panier  
+✅ Calcul automatique du **total HT** et **TTC (TVA 20%)**  
+✅ Icône du panier avec le nombre d'articles mis à jour dynamiquement  
+✅ Navigation fluide avec **GoRouter**  
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Technologies utilisées
+- **Flutter**
+- **Dart**
+- **Provider** (Gestion d'état)
+- **GoRouter** (Navigation)
+- **Material** (UI)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🚀 Installation et Exécution
+### 1️⃣ Cloner le projet
+```sh
+git clone https://github.com/Yoni-Deserbaix/epsi_shop.git
+cd epsi_shop
+```
+### 2️⃣ Installer les dépendances
+```sh
+flutter pub get
+````
+
+### 3️⃣ Lancer l'application
+```sh
+flutter run
+```
