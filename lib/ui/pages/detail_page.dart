@@ -1,6 +1,9 @@
+import 'package:epsi_shop/bo/cart.dart';
 import 'package:epsi_shop/bo/product.dart';
 import 'package:epsi_shop/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage(this.idProduct, {super.key});
@@ -13,6 +16,15 @@ class DetailPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Product Detail'),
+        actions: [
+          IconButton(
+            onPressed: () => context.go("/cart"),
+            icon: Badge(
+              label: Text(context.watch<Cart>().listProducts.length.toString()),
+              child: const Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<Product>(
         future: ApiService.getSingleProduct(idProduct),
