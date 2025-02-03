@@ -25,7 +25,7 @@ class ListProductPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('appbarTitle'),
+          title: const Text('EPSI Shop'),
         ),
         body: FutureBuilder<List<Product>>(
             future: getProducts(),
