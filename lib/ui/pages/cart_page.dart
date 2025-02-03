@@ -62,14 +62,9 @@ class TotalCart extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Total TTC",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            "${cart.getTotalTTC().toStringAsFixed(2)}€",
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
+          Text("Total TTC", style: Theme.of(context).textTheme.titleLarge),
+          Text("${cart.getTotalTTC().toStringAsFixed(2)}€",
+              style: Theme.of(context).textTheme.titleLarge),
         ],
       ),
     );
@@ -97,13 +92,14 @@ class CartItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.read<Cart>();
-
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (ctx, index) {
         final item = items[index];
-        return CartItem(product: item, cart: cart);
+        return Consumer<Cart>(
+          builder: (context, cart, child) =>
+              CartItem(product: item, cart: cart),
+        );
       },
     );
   }
@@ -118,33 +114,15 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(
-        product.image,
-        width: 60,
-        height: 60,
-        fit: BoxFit.cover,
-      ),
-      title: Text(
-        product.title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Text(
-        product.getPrice(),
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-      ),
+      leading: Image.network(product.image,
+          width: 60, height: 60, fit: BoxFit.cover),
+      title: Text(product.title, style: Theme.of(context).textTheme.bodyLarge),
+      subtitle: Text(product.getPrice(),
+          style: Theme.of(context).textTheme.bodyMedium),
       trailing: TextButton(
-        onPressed: () {
-          cart.removeProduct(product);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("${product.title} supprimé du panier")),
-          );
-        },
-        child: const Text(
-          "SUPPRIMER",
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-        ),
+        onPressed: () => cart.removeProduct(product),
+        child: Text("SUPPRIMER",
+            style: TextStyle(color: Theme.of(context).colorScheme.error)),
       ),
     );
   }
