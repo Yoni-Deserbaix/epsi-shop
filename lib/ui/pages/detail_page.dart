@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 class DetailPage extends StatelessWidget {
   DetailPage(this.product, {super.key});
 
-  Product product;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Produit"),
+        title: Text(product.title),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +23,7 @@ class DetailPage extends StatelessWidget {
           TitleLinePrice(product: product),
           Description(product: product),
           Spacer(),
-          ButtonReserverEssai()
+          AddToCartButton()
         ],
       ),
     );
@@ -79,8 +79,8 @@ class TitleLinePrice extends StatelessWidget {
   }
 }
 
-class ButtonReserverEssai extends StatelessWidget {
-  const ButtonReserverEssai({
+class AddToCartButton extends StatelessWidget {
+  const AddToCartButton({
     super.key,
   });
 
@@ -90,8 +90,14 @@ class ButtonReserverEssai extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        child:
-            ElevatedButton(onPressed: () {}, child: Text("Réserver un essai")),
+        child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+            ),
+            child: Text("Ajouter au panier")),
       ),
     );
   }
