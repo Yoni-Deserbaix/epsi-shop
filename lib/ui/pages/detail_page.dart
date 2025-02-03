@@ -15,7 +15,7 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Product Detail'),
+        title: const Text('EPSI Shop'),
         actions: [
           IconButton(
             onPressed: () => context.go("/cart"),
