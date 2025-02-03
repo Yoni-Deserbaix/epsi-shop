@@ -45,7 +45,7 @@ class DetailPage extends StatelessWidget {
                 TitleLinePrice(product: product),
                 Description(product: product),
                 const Spacer(),
-                const AddToCartButton()
+                AddToCartButton(product: product)
               ],
             );
           } else {
@@ -113,22 +113,33 @@ class TitleLinePrice extends StatelessWidget {
 class AddToCartButton extends StatelessWidget {
   const AddToCartButton({
     super.key,
+    required this.product,
   });
+
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<Cart>();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
+      child: SizedBox(
+        width: double.infinity,
         child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-            ),
-            child: Text("Ajouter au panier")),
+          onPressed: () {
+            cart.addProduct(product);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("${product.title} ajouté au panier")),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+          ),
+          child: const Text("Ajouter au panier"),
+        ),
       ),
     );
   }
