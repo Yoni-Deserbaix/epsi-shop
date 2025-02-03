@@ -1,24 +1,10 @@
-import 'dart:convert';
-
 import 'package:epsi_shop/bo/product.dart';
+import 'package:epsi_shop/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart';
 
 class ListProductPage extends StatelessWidget {
   ListProductPage({super.key});
-
-  Future<List<Product>> getProducts() async {
-    //télécharger les données
-    Response res = await get(Uri.parse("https://fakestoreapi.com/products"));
-    if (res.statusCode == 200) {
-      print(res.body);
-      List<dynamic> listMapProducts = jsonDecode(res.body);
-      //Convertir cette lsite dynamique en List<Product>
-      return listMapProducts.map((lm) => Product.fromMap(lm)).toList();
-    }
-    return Future.error("Erreur de téléchargement");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +14,15 @@ class ListProductPage extends StatelessWidget {
           title: const Text('EPSI Shop'),
         ),
         body: FutureBuilder<List<Product>>(
-            future: getProducts(),
+            future: ApiService.getProducts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
                 final listProducts = snapshot.data!;
                 return ListViewProducts(listProducts: listProducts);
               } else {
-                return Text("Erreur");
+                return const Center(child: Text("Erreur de chargement"));
               }
             }));
   }

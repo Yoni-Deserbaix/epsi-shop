@@ -1,23 +1,11 @@
-import 'dart:convert';
-
 import 'package:epsi_shop/bo/product.dart';
+import 'package:epsi_shop/services/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage(this.idProduct, {super.key});
 
   final int idProduct;
-
-  Future<Product> getProduct() async {
-    Response res =
-        await get(Uri.parse("https://fakestoreapi.com/products/$idProduct"));
-    if (res.statusCode == 200) {
-      Map<String, dynamic> mapProduct = jsonDecode(res.body);
-      return Product.fromMap(mapProduct);
-    }
-    return Future.error("Download error");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +15,12 @@ class DetailPage extends StatelessWidget {
         title: const Text('Product Detail'),
       ),
       body: FutureBuilder<Product>(
-        future: getProduct(),
+        future: ApiService.getSingleProduct(idProduct),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Erreur: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             final product = snapshot.data!;
             return Column(
@@ -44,12 +32,12 @@ class DetailPage extends StatelessWidget {
                 ),
                 TitleLinePrice(product: product),
                 Description(product: product),
-                Spacer(),
-                AddToCartButton()
+                const Spacer(),
+                const AddToCartButton()
               ],
             );
           } else {
-            return Center(child: Text('Product not found'));
+            return const Center(child: Text('Produit introuvable'));
           }
         },
       ),
