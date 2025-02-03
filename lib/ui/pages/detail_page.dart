@@ -1,30 +1,57 @@
+import 'dart:convert';
+
 import 'package:epsi_shop/bo/product.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage(this.product, {super.key});
+  DetailPage(this.idProduct, {super.key});
 
-  final Product product;
+  final int idProduct;
+
+  Future<Product> getProduct() async {
+    Response res =
+        await get(Uri.parse("https://fakestoreapi.com/products/$idProduct"));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> mapProduct = jsonDecode(res.body);
+      return Product.fromMap(mapProduct);
+    }
+    return Future.error("Download error");
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(product.title),
+        title: const Text('Product Detail'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(
-            product.image,
-            height: 150,
-          ),
-          TitleLinePrice(product: product),
-          Description(product: product),
-          Spacer(),
-          AddToCartButton()
-        ],
+      body: FutureBuilder<Product>(
+        future: getProduct(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final product = snapshot.data!;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  product.image,
+                  height: 150,
+                ),
+                TitleLinePrice(product: product),
+                Description(product: product),
+                Spacer(),
+                AddToCartButton()
+              ],
+            );
+          } else {
+            return Center(child: Text('Product not found'));
+          }
+        },
       ),
     );
   }
@@ -65,9 +92,13 @@ class TitleLinePrice extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            product.title,
-            style: Theme.of(context).textTheme.headlineLarge,
+          Expanded(
+            child: Text(
+              product.title,
+              style: Theme.of(context).textTheme.headlineLarge,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           Text(
             product.getPrice(),
