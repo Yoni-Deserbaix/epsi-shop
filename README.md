@@ -27,7 +27,7 @@ Elle utilise **Flutter, Provider et GoRouter**.
 ## 🚀 Installation et Exécution
 ### 1️⃣ Cloner le projet
 ```sh
-git clone https://github.com/Yoni-Deserbaix/epsi_shop.git
+git clone https://github.com/y2-znt/epsi_shop.git
 cd epsi_shop
 ```
 ### 2️⃣ Installer les dépendances
